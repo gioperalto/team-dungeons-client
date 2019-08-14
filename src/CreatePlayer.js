@@ -14,8 +14,18 @@ class CreatePlayer extends React.Component {
   }
 
   rollStats () {
-    axios.get('http://localhost:6001/api/v5/players/rollStats')
-      .then(response => this.setState({stats: response.data.stats}));
+    axios.get('http://localhost:5001/api/v5/players/rollStats')
+      .then(response => this.setState({stats: response.data}));
+  }
+
+  createStats () {
+    const stats = [];
+
+    for(let i = 0; i < this.state.stats.length; i++) {
+      stats.push(<div class='square'>{this.state.stats[i]}</div>);
+    }
+
+    return stats;
   }
   
   render () { 
@@ -27,7 +37,7 @@ class CreatePlayer extends React.Component {
         </header>
 
         <div className='hero'>
-          <h1 className='title'>Welcome to Next.js!</h1>
+          <h1 className='title'>Team Dungeons</h1>
           <p className='description'>
             To get started, roll your stats.
           </p>
@@ -35,9 +45,9 @@ class CreatePlayer extends React.Component {
               Roll
           </button>
 
-          <p className='stats'>
-            {this.state.stats}
-          </p>
+          <div className='dice'>
+            {this.createStats()}
+          </div>
 
           {/* <div className='row'>
             <Link href='https://github.com/zeit/next.js#getting-started'>
