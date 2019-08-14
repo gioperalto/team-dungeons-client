@@ -1,7 +1,6 @@
 import React from 'react'
 import axios from 'axios';
-import logo from './logo.svg';
-import './App.css';
+import '../../css/App.css';
 
 class CreatePlayer extends React.Component { 
   constructor () { 
@@ -31,11 +30,6 @@ class CreatePlayer extends React.Component {
   render () { 
     return (
       <div className="CreatePlayer">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-
-        </header>
-
         <div className='hero'>
           <h1 className='title'>Team Dungeons</h1>
           <p className='description'>
@@ -71,8 +65,8 @@ class CreatePlayer extends React.Component {
           </div> */}
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default CreatePlayer
+export default CreatePlayer;
