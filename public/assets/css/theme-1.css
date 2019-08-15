@@ -27,3 +27,7 @@
 .tabs .indicator {
   background-color: #ff5722;
 }
+
+.btn.iso {
+  margin: 0.5rem;
+}

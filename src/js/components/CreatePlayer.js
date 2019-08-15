@@ -6,8 +6,12 @@ class CreatePlayer extends React.Component {
   constructor () { 
     super()
     this.state = {
-      visibility: {},
-      stats: []
+      // visibility: {},
+      rolls: [],
+      stats: {
+        str: '-', con: '-', dex: '-',
+        int: '-', wis: '-', cha: '-'
+      }
     }
 
     this.rollStats = this.rollStats.bind(this);
@@ -19,75 +23,191 @@ class CreatePlayer extends React.Component {
 
   rollStats () {
     axios.get('http://localhost:5001/api/v5/players/rollStats')
-      .then(response => this.setState({stats: response.data}));
+      .then(response => this.setState({ rolls: response.data }));
     // this.hide();
   }
 
   createdStats () {
-    const stats = [];
+    const data = [];
 
-    // stats.push(<div class='col s12'><h5 class='header'>Here are the results of your roll:</h5></div>);
-
-    // stats.push(<div class='col s3'></div>);
-    for(let i = 0; i < this.state.stats.length; i++) {
-      stats.push(<div class='col s1'><h5 class='header'>{this.state.stats[i]}</h5></div>);
+    for(let i = 0; i < this.state.rolls.length; i++) {
+      data.push(
+        <button key={i} 
+          onDragStart={(e) => this.onDragStart(e, i)}
+          draggable 
+          className='btn deep-orange iso draggable'
+        >
+          {this.state.rolls[i]}
+        </button>
+      );
     }
-    // stats.push(<div class='col s3'></div>);
 
-    return stats;
+    return data;
+  }
+
+  onDragOver (ev) {
+    ev.preventDefault();
+  }
+
+  onDragStart (ev, id) {
+    ev.dataTransfer.setData("text/plain", id);
+  }
+
+  onDrop (ev, attr) {
+    const id = ev.dataTransfer.getData("text");
+    let stats = { ...this.state.stats, [attr]: this.state.rolls[id] };
+
+    this.setState({stats});
   }
   
   render () { 
     return (
-      <div class="CreatePlayer">
-        <div class='parallax-container overlay'>
-          <div class='section no-pad-bot'>
-            <div class='container'>
-              <h1 class='header center white-text'>Character Creation</h1> 
+      <div className="CreatePlayer">
+        <div className='parallax-container overlay'>
+          <div className='section no-pad-bot'>
+            <div className='container'>
+              <h1 className='header center white-text'>Character Creation</h1> 
             </div>
-            <div class='row center'>
-                <h5 class='header col s12 light white-text'>
+            <div className='row center'>
+                <h5 className='header col s12 light white-text'>
                   Follow the steps below to create your character so that you can begin your journey.
                 </h5>
             </div>
           </div>
-          <div class='parallax'>
+          <div className='parallax'>
               <img src={splash} alt='Background Top' />
           </div>
         </div>
-        <div class='section white'>
-          <div class="row">
-            <div class="col s12">
-              <ul class="tabs">
-                <li class="tab col s3"><a class="active" href="#step1">Roll</a></li>
-                <li class="tab col s3 disabled"><a href="#step2">Assign Stats</a></li>
-                <li class="tab col s3 disabled"><a href="#step3">Choose Race</a></li>
-                <li class="tab col s3 disabled"><a href="#step4">Choose Class</a></li>
+        <div className='section white'>
+          <div className="row">
+            <div className="col s12">
+              <ul className="tabs">
+                <li className="tab col s3"><a className="active" href="#step1">Roll</a></li>
+                <li className="tab col s3"><a href="#step2">Assign Stats</a></li>
+                <li className="tab col s3 disabled"><a href="#step3">Choose Race</a></li>
+                <li className="tab col s3 disabled"><a href="#step4">Choose Class</a></li>
               </ul>
             </div>
-            <div id="step1" class="col s12">
-              <div class='row center'>
-                <h5 class='header col s12'>
+            <div id="step1" className="col s12">
+              <div className='row center'>
+                <h5 className='header col s12'>
                   Roll your dice to get started.
                 </h5>
               </div>
-              <div class='row center'>
-                <button class='btn-large deep-orange waves-effect waves-orange' onClick={() => this.rollStats()}>
+              <div className='row center'>
+                <button className='btn-large deep-orange waves-effect waves-orange' onClick={() => this.rollStats()}>
                   Roll
                 </button>
               </div>
             </div>
-            <div id="step2" class="col s12">
-              <div class='row center'>
+            <div id="step2" className="col s12">
+              <div className='row'>
+                <h5 className='header center'>
+                  Move each number below into the stat of your choice.
+                </h5>
+              </div>
+              <div className='row center'>
                 {this.createdStats()}
               </div>
+              <div className='row center'>
+                <div className='col s2'>
+                  <div className="card blue-grey darken-1 droppable" 
+                    onDragOver={(e) => this.onDragOver(e)}
+                    onDrop={(e) => this.onDrop(e, 'str')}
+                  >
+                    <div className="card-content white-text">
+                      <span className="card-title">Strength </span>
+                      <p>Measures your natural athleticism and bodily power.</p>
+                    </div>
+                    <div className="card-action white-text">
+                      <i className='material-icons'>fitness_center</i> 
+                      <p id='str'>{this.state.stats.str}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className='col s2'>
+                  <div className="card blue-grey darken-1 droppable" 
+                    onDragOver={(e) => this.onDragOver(e)}
+                    onDrop={(e) => this.onDrop(e, 'dex')}
+                  >
+                    <div className="card-content white-text">
+                      <span className="card-title">Dexterity</span>
+                      <p>Measures your physical agility and reflexes.</p>
+                    </div>
+                    <div className="card-action white-text">
+                      <i className='material-icons'>flash_on</i> 
+                      <p id='dex'>{this.state.stats.dex}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className='col s2'>
+                  <div className="card blue-grey darken-1 droppable" 
+                    onDragOver={(e) => this.onDragOver(e)}
+                    onDrop={(e) => this.onDrop(e, 'con')}
+                  >
+                    <div className="card-content white-text">
+                      <span className="card-title">Constitution</span>
+                      <p>Measures your health, stamina, and vital force.</p>
+                    </div>
+                    <div className="card-action white-text">
+                      <i className='material-icons'>accessibility_new</i> 
+                      <p id='con'>{this.state.stats.con}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className='col s2'>
+                  <div className="card blue-grey darken-1 droppable" 
+                    onDragOver={(e) => this.onDragOver(e)}
+                    onDrop={(e) => this.onDrop(e, 'int')}
+                  >
+                    <div className="card-content white-text">
+                      <span className="card-title">Intelligence</span>
+                      <p>Measures your information recall, and analytical skill.</p>
+                    </div>
+                    <div className="card-action white-text">
+                      <i className='material-icons'>extension</i> 
+                      <p id='int'>{this.state.stats.int}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className='col s2'>
+                  <div className="card blue-grey darken-1 droppable" 
+                    onDragOver={(e) => this.onDragOver(e)}
+                    onDrop={(e) => this.onDrop(e, 'wis')}
+                  >
+                    <div className="card-content white-text">
+                      <span className="card-title">Wisdom</span>
+                      <p>Measures your awareness, intuition, and insight.</p>
+                    </div>
+                    <div className="card-action white-text">
+                      <i className='material-icons'>remove_red_eye</i> 
+                      <p id='wis'>{this.state.stats.wis}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className='col s2'>
+                  <div className="card blue-grey darken-1 droppable" 
+                    onDragOver={(e) => this.onDragOver(e)}
+                    onDrop={(e) => this.onDrop(e, 'cha')}
+                  >
+                    <div className="card-content white-text">
+                      <span className="card-title">Charisma</span>
+                      <p>Measures your confidence and eloquence.</p>
+                    </div>
+                    <div className="card-action white-text">
+                      <i className='material-icons'>favorite</i> 
+                      <p id='cha'>{this.state.stats.cha}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div id="step3" class="col s12">step 3</div>
-            <div id="step4" class="col s12">step 4</div>
+            <div id="step3" className="col s12">step 3</div>
+            <div id="step4" className="col s12">step 4</div>
           </div>
         </div>
-        <div class='parallax-container overlay'>
-            <div class='parallax'>
+        <div className='parallax-container overlay'>
+            <div className='parallax'>
                 <img src={splash} alt='Background Bottom' />
             </div>
         </div>
