@@ -1,7 +1,11 @@
 /* Theme 1 */
 
-.parallax-container {
+.parallax-hero {
   height: 380px;
+}
+
+.parallax-container {
+  height: 240px;
 }
 
 .overlay {
@@ -10,4 +14,16 @@
 
 .icon-block .material-icons {
   font-size: inherit;
+}
+
+.tabs .tab a {
+  color: #ff5722;
+}
+
+.tabs .tab.disabled a {
+  color: #e67e22;
+}
+
+.tabs .indicator {
+  background-color: #ff5722;
 }

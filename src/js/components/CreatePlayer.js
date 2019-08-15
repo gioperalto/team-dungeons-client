@@ -1,7 +1,6 @@
 import React from 'react'
-import bg1 from '../../static/images/home.jpg';
+import splash from '../../static/images/character-splash-1.jpg';
 import axios from 'axios';
-import '../../css/App.css';
 
 class CreatePlayer extends React.Component { 
   constructor () { 
@@ -14,14 +13,14 @@ class CreatePlayer extends React.Component {
     this.rollStats = this.rollStats.bind(this);
   }
 
-  hide() {
-      this.setState({ visibility: { display: 'none' } });
-  }
+  // hide() {
+  //     this.setState({ visibility: { display: 'none' } });
+  // }
 
   rollStats () {
     axios.get('http://localhost:5001/api/v5/players/rollStats')
       .then(response => this.setState({stats: response.data}));
-    this.hide();
+    // this.hide();
   }
 
   createdStats () {
@@ -44,29 +43,53 @@ class CreatePlayer extends React.Component {
         <div class='parallax-container overlay'>
           <div class='section no-pad-bot'>
             <div class='container'>
-              <h1 class='header center white-text'>Team Dungeons</h1> 
+              <h1 class='header center white-text'>Character Creation</h1> 
             </div>
-            <div id='step1' style={this.state.visibility} >
+            <div class='row center'>
+                <h5 class='header col s12 light white-text'>
+                  Follow the steps below to create your character so that you can begin your journey.
+                </h5>
+            </div>
+          </div>
+          <div class='parallax'>
+              <img src={splash} alt='Background Top' />
+          </div>
+        </div>
+        <div class='section white'>
+          <div class="row">
+            <div class="col s12">
+              <ul class="tabs">
+                <li class="tab col s3"><a class="active" href="#step1">Roll</a></li>
+                <li class="tab col s3 disabled"><a href="#step2">Assign Stats</a></li>
+                <li class="tab col s3 disabled"><a href="#step3">Choose Race</a></li>
+                <li class="tab col s3 disabled"><a href="#step4">Choose Class</a></li>
+              </ul>
+            </div>
+            <div id="step1" class="col s12">
               <div class='row center'>
-                <h5 class='header col s12 white-text'>
+                <h5 class='header col s12'>
                   Roll your dice to get started.
                 </h5>
               </div>
               <div class='row center'>
-                <button class='btn-large deep-orange' onClick={() => this.rollStats()}>
+                <button class='btn-large deep-orange waves-effect waves-orange' onClick={() => this.rollStats()}>
                   Roll
                 </button>
               </div>
             </div>
-            <div id='step2'>
-              <div class='row center white'>
+            <div id="step2" class="col s12">
+              <div class='row center'>
                 {this.createdStats()}
               </div>
             </div>
+            <div id="step3" class="col s12">step 3</div>
+            <div id="step4" class="col s12">step 4</div>
           </div>
-          <div class='parallax'>
-              <img src={bg1} alt='Background Top' />
-          </div>
+        </div>
+        <div class='parallax-container overlay'>
+            <div class='parallax'>
+                <img src={splash} alt='Background Bottom' />
+            </div>
         </div>
       </div>
     );

@@ -1,12 +1,12 @@
 import React from 'react';
-import bg1 from '../../static/images/home.jpg';
-import bg2 from '../../static/images/home-2.jpg';
+import splash1 from '../../static/images/home-splash-1.jpg';
+import splash2 from '../../static/images/home-splash-2.jpg';
 
 class Home extends React.Component {
     render() {
         return (
             <div>
-                <div class='parallax-container overlay'>
+                <div class='parallax-hero overlay'>
                     <div class='section no-pad-bot'>
                         <div class='container'>
                             <h1 class='header center white-text'>Team Dungeons</h1> 
@@ -21,7 +21,7 @@ class Home extends React.Component {
                         </div>
                     </div>
                     <div class='parallax'>
-                        <img src={bg1} alt='Background Top' />
+                        <img src={splash1} alt='Background Top' />
                     </div>
                 </div>
                 <div class='section white'>
@@ -63,7 +63,7 @@ class Home extends React.Component {
                 </div>
                 <div class='parallax-container overlay'>
                     <div class='parallax'>
-                        <img src={bg2} alt='Background Bottom' />
+                        <img src={splash2} alt='Background Bottom' />
                     </div>
                 </div>
             </div>
