@@ -77,12 +77,32 @@ class CreatePlayer extends React.Component {
 
     for(let i = 0; i < this.state.races.length; i++) {
       const img_src = races(`./race-thumb-${this.state.races[i].id}.jpg`);
-      const colors = [
-        'purple','green','blue','orange','red','indigo',
-        'teal','lime','pink','cyan','amber','deep-purple'
-      ];
+      const colors = {
+        dwarf: 'purple',
+        elf: 'green',
+        halfling: 'blue',
+        human: 'orange',
+        dragonborn: 'red',
+        gnome: 'indigo',
+        half_elf: 'teal',
+        half_orc: 'deep-purple',
+        tiefling: 'amber'
+      };
+      const alignment = {
+        lawfulness: {
+          Lawful: 'blue',
+          Neutral: 'indigo',
+          Chaotic: 'purple'
+        },
+        goodness: {
+          Good: 'green',
+          Neutral: 'orange',
+          Evil: 'red'
+        }
+      };
+
       data.push(
-        <div className="col s4">
+        <div className="col s4" key={i}>
           <div className="card hoverable">
             <div className="card-image">
               <img 
@@ -98,20 +118,26 @@ class CreatePlayer extends React.Component {
                     lbs. An adult ${this.state.races[i].name} may be ${this.state.races[i].size.max_height/12} feet tall.`}</p>
               </div>
               <div className='row'>
-                <p><span class='light'>Languages:</span> {this.state.races[i].languages.map((cv) => {
-                      return <div class='chip'>{cv}</div>
-                })}</p>
+                <div><span className='light'>Languages:</span> {this.state.races[i].languages.map((cv) => {
+                      return <div className='chip' key={cv}>{cv}</div>
+                })}</div>
               </div>
               <div className='row'>
-                <p><span class='light'>Traits:</span> {
+                <div><span className='light'>Traits:</span> {
                   this.state.races[i].traits.map((cv) => {
-                    return <div class={`chip ${colors[i]} white-text`}>{cv}</div>
+                    return <div className={`chip ${colors[this.state.races[i].id]} white-text`} key={cv}>{cv}</div>
                   })
-                }</p>
+                }</div>
+              </div>
+              <div className='row'>
+                <div><span className='light'>Alignment:</span>
+                  <div className={`chip ${alignment.lawfulness[this.state.races[i].alignment.lawfulness]} white-text`}>{this.state.races[i].alignment.lawfulness}</div>
+                  <div className={`chip ${alignment.goodness[this.state.races[i].alignment.goodness]} white-text`}>{this.state.races[i].alignment.goodness}</div>
+                </div>
               </div>
             </div>
             <div className="card-action">
-              <button class='btn deep-orange' onClick={() => this.getClasses()}>Select this race</button>
+              <button className='btn deep-orange' onClick={() => this.getClasses()}>Select this race</button>
             </div>
           </div>
         </div>
@@ -153,18 +179,18 @@ class CreatePlayer extends React.Component {
               <div className='row'>
                 <div className='col s12'>
                   <p><span className='light'>Primary Abilities:</span> {this.state.classes[i].primary_abilities.map((cv) => {
-                    return <div class='chip blue white-text'>{cv}</div>
+                    return <div className='chip blue white-text'>{cv}</div>
                   })}</p>
                 </div>
                 <div className='col s12'>
-                  <p><span class='light'>Saving Throws:</span> {this.state.classes[i].saving_throws.map((cv) => {
-                    return <div class='chip orange white-text'>{cv}</div>
+                  <p><span className='light'>Saving Throws:</span> {this.state.classes[i].saving_throws.map((cv) => {
+                    return <div className='chip orange white-text'>{cv}</div>
                   })}</p>
                 </div>
               </div>
             </div>
             <div className="card-action">
-              <button class='btn deep-orange'>Select this class</button>
+              <button className='btn deep-orange'>Select this class</button>
             </div>
           </div>
         </div>
