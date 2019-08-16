@@ -77,9 +77,13 @@ class CreatePlayer extends React.Component {
 
     for(let i = 0; i < this.state.races.length; i++) {
       const img_src = races(`./race-thumb-${this.state.races[i].id}.jpg`);
+      const colors = [
+        'purple','green','blue','orange','red','indigo',
+        'teal','lime','pink','cyan','amber','deep-purple'
+      ];
       data.push(
         <div className="col s4">
-          <div className="card">
+          <div className="card hoverable">
             <div className="card-image">
               <img 
                 src={img_src} 
@@ -88,11 +92,26 @@ class CreatePlayer extends React.Component {
               <span className="card-title">{this.state.races[i].name}</span>
             </div>
             <div className="card-content">
-              <p>I am a very simple card. I am good at containing small bits of information.
-              I am convenient because I require little markup to use effectively.</p>
+              <div className='row'>
+                <p>{`The ${this.state.races[i].name} can live for ${this.state.races[i].age.max} years, 
+                    weighs ${this.state.races[i].size.min_weight}-${this.state.races[i].size.max_weight}
+                    lbs. An adult ${this.state.races[i].name} may be ${this.state.races[i].size.max_height/12} feet tall.`}</p>
+              </div>
+              <div className='row'>
+                <p><span class='light'>Languages:</span> {this.state.races[i].languages.map((cv) => {
+                      return <div class='chip'>{cv}</div>
+                })}</p>
+              </div>
+              <div className='row'>
+                <p><span class='light'>Traits:</span> {
+                  this.state.races[i].traits.map((cv) => {
+                    return <div class={`chip ${colors[i]} white-text`}>{cv}</div>
+                  })
+                }</p>
+              </div>
             </div>
             <div className="card-action">
-              <a href="#">This is a link</a>
+              <button class='btn deep-orange' onClick={() => this.getClasses()}>Select this race</button>
             </div>
           </div>
         </div>
@@ -114,7 +133,7 @@ class CreatePlayer extends React.Component {
       const img_src = classes(`./class-thumb-${this.state.classes[i].name.toLowerCase()}.jpg`);
       data.push(
         <div className="col s4">
-          <div className="card">
+          <div className="card hoverable">
             <div className="card-image">
               <img 
                 src={img_src} 
@@ -123,11 +142,29 @@ class CreatePlayer extends React.Component {
               <span className="card-title">{this.state.classes[i].name}</span>
             </div>
             <div className="card-content">
-              <p>I am a very simple card. I am good at containing small bits of information.
-              I am convenient because I require little markup to use effectively.</p>
+              <div className='row'>
+                <div className='col s2'>
+                  <div className="chip black white-text">d{this.state.classes[i].hit_die}</div>
+                </div>
+                <div className='col s10'>
+                  <p className='light'>"{this.state.classes[i].description}"</p>
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col s12'>
+                  <p><span className='light'>Primary Abilities:</span> {this.state.classes[i].primary_abilities.map((cv) => {
+                    return <div class='chip blue white-text'>{cv}</div>
+                  })}</p>
+                </div>
+                <div className='col s12'>
+                  <p><span class='light'>Saving Throws:</span> {this.state.classes[i].saving_throws.map((cv) => {
+                    return <div class='chip orange white-text'>{cv}</div>
+                  })}</p>
+                </div>
+              </div>
             </div>
             <div className="card-action">
-              <a href="#">This is a link</a>
+              <button class='btn deep-orange'>Select this class</button>
             </div>
           </div>
         </div>
@@ -188,7 +225,7 @@ class CreatePlayer extends React.Component {
               </div>
               <div className='row center'>
                 <div className='col s2'>
-                  <div className="card blue-grey darken-1 droppable" 
+                  <div className="card hoverable blue-grey darken-1 droppable" 
                     onDragOver={(e) => this.onDragOver(e)}
                     onDrop={(e) => this.onDrop(e, 'str')}
                   >
@@ -203,7 +240,7 @@ class CreatePlayer extends React.Component {
                   </div>
                 </div>
                 <div className='col s2'>
-                  <div className="card blue-grey darken-1 droppable" 
+                  <div className="card hoverable blue-grey darken-1 droppable" 
                     onDragOver={(e) => this.onDragOver(e)}
                     onDrop={(e) => this.onDrop(e, 'dex')}
                   >
@@ -218,7 +255,7 @@ class CreatePlayer extends React.Component {
                   </div>
                 </div>
                 <div className='col s2'>
-                  <div className="card blue-grey darken-1 droppable" 
+                  <div className="card hoverable blue-grey darken-1 droppable" 
                     onDragOver={(e) => this.onDragOver(e)}
                     onDrop={(e) => this.onDrop(e, 'con')}
                   >
@@ -233,7 +270,7 @@ class CreatePlayer extends React.Component {
                   </div>
                 </div>
                 <div className='col s2'>
-                  <div className="card blue-grey darken-1 droppable" 
+                  <div className="card hoverable blue-grey darken-1 droppable" 
                     onDragOver={(e) => this.onDragOver(e)}
                     onDrop={(e) => this.onDrop(e, 'int')}
                   >
@@ -248,7 +285,7 @@ class CreatePlayer extends React.Component {
                   </div>
                 </div>
                 <div className='col s2'>
-                  <div className="card blue-grey darken-1 droppable" 
+                  <div className="card hoverable blue-grey darken-1 droppable" 
                     onDragOver={(e) => this.onDragOver(e)}
                     onDrop={(e) => this.onDrop(e, 'wis')}
                   >
@@ -263,7 +300,7 @@ class CreatePlayer extends React.Component {
                   </div>
                 </div>
                 <div className='col s2'>
-                  <div className="card blue-grey darken-1 droppable" 
+                  <div className="card hoverable blue-grey darken-1 droppable" 
                     onDragOver={(e) => this.onDragOver(e)}
                     onDrop={(e) => this.onDrop(e, 'cha')}
                   >
@@ -288,20 +325,10 @@ class CreatePlayer extends React.Component {
               <div className='row center'>
                 {this.displayRaces()}
               </div>
-              <div className='row center'>
-                <button className='btn-large deep-orange waves-effect waves-orange' onClick={() => this.getClasses()}>
-                  Proceed
-                </button>
-              </div>
             </div>
             <div id="step4" className="col s12">
               <div className='row center'>
                 {this.displayClasses()}
-              </div>
-              <div className='row center'>
-                <button className='btn-large deep-orange waves-effect waves-orange'>
-                  Create My Character
-                </button>
               </div>
             </div>
           </div>
