@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import CreatePlayer from './CreatePlayer';
-import * as serviceWorker from './serviceWorker';
+import './css/index.css';
+import Menu from './js/components/Menu';
+import AppRouter from './js/components/AppRouter';
+import * as serviceWorker from './js/serviceWorker';
 
-ReactDOM.render(<CreatePlayer />, document.getElementById('root'));
+ReactDOM.render(<Menu />, document.getElementById('menu'));
+ReactDOM.render(<AppRouter />, document.getElementById('page'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
