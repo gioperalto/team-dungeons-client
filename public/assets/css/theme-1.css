@@ -31,3 +31,7 @@
 .btn.iso {
   margin: 0.5rem;
 }
+
+.hidden {
+  display: none;
+}

@@ -24,10 +24,6 @@ class CreatePlayer extends React.Component {
     this.getClasses = this.getClasses.bind(this);
   }
 
-  // hide() {
-  //     this.setState({ visibility: { display: 'none' } });
-  // }
-
   onDragOver (ev) {
     ev.preventDefault();
   }
@@ -39,8 +35,15 @@ class CreatePlayer extends React.Component {
   onDrop (ev, attr) {
     const id = ev.dataTransfer.getData("text");
     let stats = { ...this.state.stats, [attr]: this.state.rolls[id] };
+    let newRolls = this.state.rolls;
+    newRolls.splice(id,1);
 
     this.setState({stats});
+    this.setState({ rolls: newRolls })
+
+    if(this.state.rolls.length < 1) { 
+      this.refs['tab1next'].className = 'btn-large deep-orange waves-effect waves-orange'; 
+    }
   }
 
   rollStats () {
@@ -72,7 +75,7 @@ class CreatePlayer extends React.Component {
       .then(response => this.setState({ races: response.data }));
   }
 
-  displayRaces() {
+  displayRaces () {
     const data = [];
 
     for(let i = 0; i < this.state.races.length; i++) {
@@ -119,25 +122,32 @@ class CreatePlayer extends React.Component {
               </div>
               <div className='row'>
                 <div><span className='light'>Languages:</span> {this.state.races[i].languages.map((cv) => {
-                      return <div className='chip' key={cv}>{cv}</div>
+                      return <span className='chip' key={cv}>{cv}</span>
                 })}</div>
               </div>
               <div className='row'>
                 <div><span className='light'>Traits:</span> {
                   this.state.races[i].traits.map((cv) => {
-                    return <div className={`chip ${colors[this.state.races[i].id]} white-text`} key={cv}>{cv}</div>
+                    return <span className={`chip ${colors[this.state.races[i].id]} white-text`} key={cv}>{cv}</span>
                   })
                 }</div>
               </div>
               <div className='row'>
-                <div><span className='light'>Alignment:</span>
-                  <div className={`chip ${alignment.lawfulness[this.state.races[i].alignment.lawfulness]} white-text`}>{this.state.races[i].alignment.lawfulness}</div>
-                  <div className={`chip ${alignment.goodness[this.state.races[i].alignment.goodness]} white-text`}>{this.state.races[i].alignment.goodness}</div>
+                <div><span className='light'>Alignment:</span> 
+                  <span className={`chip ${alignment.lawfulness[this.state.races[i].alignment.lawfulness]} white-text`}>{this.state.races[i].alignment.lawfulness}</span>
+                  <span className={`chip ${alignment.goodness[this.state.races[i].alignment.goodness]} white-text`}>{this.state.races[i].alignment.goodness}</span>
                 </div>
               </div>
             </div>
             <div className="card-action">
-              <button className='btn deep-orange' onClick={() => this.getClasses()}>Select this race</button>
+              <button 
+                className='btn deep-orange' 
+                onClick={
+                  () => {
+                    this.getClasses();
+                    this.transitionTab('tab2','tab3');
+                  }
+                }>Select this race</button>
             </div>
           </div>
         </div>
@@ -152,13 +162,13 @@ class CreatePlayer extends React.Component {
       .then(response => this.setState({ classes: response.data }));
   }
 
-  displayClasses() {
+  displayClasses () {
     const data = [];
 
     for(let i = 0; i < this.state.classes.length; i++) {
       const img_src = classes(`./class-thumb-${this.state.classes[i].name.toLowerCase()}.jpg`);
       data.push(
-        <div className="col s4">
+        <div className="col s12 m6 l4">
           <div className="card hoverable">
             <div className="card-image">
               <img 
@@ -170,7 +180,7 @@ class CreatePlayer extends React.Component {
             <div className="card-content">
               <div className='row'>
                 <div className='col s2'>
-                  <div className="chip black white-text">d{this.state.classes[i].hit_die}</div>
+                  <span className="chip black white-text">d{this.state.classes[i].hit_die}</span>
                 </div>
                 <div className='col s10'>
                   <p className='light'>"{this.state.classes[i].description}"</p>
@@ -190,7 +200,14 @@ class CreatePlayer extends React.Component {
               </div>
             </div>
             <div className="card-action">
-              <button className='btn deep-orange'>Select this class</button>
+              <button 
+                className='btn deep-orange'
+                onClick={
+                  () => {
+                    // this.getClasses();
+                    this.transitionTab('tab3','tab4');
+                  }
+                }>Select this class</button>
             </div>
           </div>
         </div>
@@ -198,6 +215,19 @@ class CreatePlayer extends React.Component {
     }
 
     return data;
+  }
+
+  transitionText(ref1, ref2) {
+    this.refs[ref1].className += ' hidden';
+    this.refs[ref2].className -= ' hidden';
+  }
+
+  transitionTab (ref1, ref2) {
+    let before = this.refs[ref1];
+    let afterLink = this.refs[ref2].children[0];
+    
+    before.className += ' disabled';
+    afterLink.click();
   }
   
   render () { 
@@ -222,26 +252,28 @@ class CreatePlayer extends React.Component {
           <div className="row">
             <div className="col s12">
               <ul className="tabs">
-                <li className="tab col s3"><a className="active" href="#step1">Roll</a></li>
-                <li className="tab col s3"><a href="#step2">Assign Stats</a></li>
-                <li className="tab col s3"><a href="#step3">Choose Race</a></li>
-                <li className="tab col s3"><a href="#step4">Choose Class</a></li>
+                <li ref="tab1" className="tab col s3"><a className="active" href="#step1">Assign Stats</a></li>
+                <li ref="tab2" className="tab col s3"><a href="#step2">Choose Race</a></li>
+                <li ref="tab3" className="tab col s3"><a href="#step3">Choose Class</a></li>
+                <li ref="tab4" className="tab col s3"><a href="#step4">Review Character</a></li>
               </ul>
             </div>
             <div id="step1" className="col s12">
-              <div className='row center'>
+              <div ref='tab1text1' className='row center'>
                 <h5 className='header col s12'>
                   Roll your dice to get started.
                 </h5>
-              </div>
-              <div className='row center'>
-                <button className='btn-large deep-orange waves-effect waves-orange' onClick={() => this.rollStats()}>
+                <button
+                  className='btn-large deep-orange waves-effect waves-orange' 
+                  onClick={() => {
+                      this.rollStats();
+                      this.transitionText('tab1text1','tab1text2');
+                  }}
+                >
                   Roll
                 </button>
               </div>
-            </div>
-            <div id="step2" className="col s12">
-              <div className='row'>
+              <div ref='tab1text2' className='row hidden'>
                 <h5 className='header center'>
                   Move each number below into the stat of your choice.
                 </h5>
@@ -342,14 +374,27 @@ class CreatePlayer extends React.Component {
                 </div>
               </div>
               <div className='row center'>
-                <button className='btn-large deep-orange waves-effect waves-orange' onClick={() => this.getRaces()}>
+                <button 
+                  ref='tab1next'
+                  className='btn-large deep-orange waves-effect waves-orange hidden' 
+                  onClick={
+                    () => {
+                      this.getRaces();
+                      this.transitionTab('tab1', 'tab2');
+                    }
+                  }>
                   Proceed
                 </button>
               </div>
             </div>
-            <div id="step3" className="col s12">
+            <div id="step2" className="col s12">
               <div className='row center'>
                 {this.displayRaces()}
+              </div>
+            </div>
+            <div id="step3" className="col s12">
+              <div className='row center'>
+                {this.displayClasses()}
               </div>
             </div>
             <div id="step4" className="col s12">
