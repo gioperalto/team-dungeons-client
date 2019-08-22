@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const races = require.context('../../static/images/races', true);
 const classes = require.context('../../static/images/classes', true);
+const characters = require.context('../../static/images/characters', true);
 
 class CreatePlayer extends React.Component { 
   constructor () { 
@@ -11,8 +12,8 @@ class CreatePlayer extends React.Component {
     this.state = {
       // visibility: {},
       rolls: [],
-      race: {},
-      class: {},
+      race: { id: 'elf' },
+      class: { name: 'barbarian' },
       stats: {
         str: '-', con: '-', dex: '-',
         int: '-', wis: '-', cha: '-'
@@ -227,10 +228,62 @@ class CreatePlayer extends React.Component {
     return data;
   }
 
-  displayPlayerData () {
-    console.log(this.state.stats);
-    console.log(this.state.race);
-    console.log(this.state.class);
+  displayCharacter () {
+    let data = [];
+    const img_src = characters(`./${this.state.race.id}-${this.state.class.name.toLowerCase()}.jpg`);
+
+    data.push(
+      <div className='center'>
+        <div className='row'>
+          <h2 className="header">{`${this.state.race.name} ${this.state.class.name}`}</h2>
+        </div>
+        <div className='row'>
+          <div class="col s12 m4">
+            <div class="card">
+              <div class="card-image">
+                <img src={img_src} alt={`${this.state.race.id} ${this.state.class.name}`} />
+                <span class="card-title">Stats</span>
+              </div>
+              <div class="card-content">
+                <div>
+                  <span className="light">Race: </span>
+                  <span className="chip">{this.state.race.name}</span>
+                </div>
+                <div>
+                  <span className="light">Class: </span>
+                  <span className="chip">{this.state.class.name}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='col s4'>
+            <div class="card">
+              <div class="card-image">
+                <span class="card-title">Race</span>
+              </div>
+              <div class="card-content">
+                <p>I am a very simple card. I am good at containing small bits of information.
+                I am convenient because I require little markup to use effectively.</p>
+              </div>
+            </div>
+          </div>
+          <div className='col s4'>
+            <div class="card">
+              <div class="card-image">
+                <span class="card-title">Class</span>
+              </div>
+              <div class="card-content">
+                <p>I am a very simple card. I am good at containing small bits of information.
+                I am convenient because I require little markup to use effectively.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        
+    );
+
+    return data;
   }
 
   disable (ref) {
@@ -240,8 +293,8 @@ class CreatePlayer extends React.Component {
   }
 
   transitionText(ref1, ref2) {
-    this.refs[ref1].className += ' hidden';
-    this.refs[ref2].className -= ' hidden';
+    this.refs[ref1].className += ' hide';
+    this.refs[ref2].className -= ' hide';
   }
 
   transitionTab (ref) {
@@ -280,8 +333,8 @@ class CreatePlayer extends React.Component {
                 <li ref="tab4" className="tab col s3 disabled"><a href="#step4">Review Character</a></li>
               </ul>
             </div>
-            <div id="step1" className="col s12">
-              <div ref='tab1text1' className='row center'>
+            <div id="step1">
+              <div ref='tab1text1' className='center'>
                 <h5 className='header col s12'>
                   Roll your dice to get started.
                 </h5>
@@ -295,7 +348,7 @@ class CreatePlayer extends React.Component {
                   Roll
                 </button>
               </div>
-              <div ref='tab1text2' className='row hidden'>
+              <div ref='tab1text2' className='row hide'>
                 <h5 className='header center'>
                   Move each number below into the stat of your choice.
                 </h5>
@@ -395,10 +448,10 @@ class CreatePlayer extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className='row center'>
+              <div className='center'>
                 <button 
                   ref='tab1next'
-                  className='btn-large deep-orange waves-effect waves-orange hidden' 
+                  className='btn-large deep-orange waves-effect waves-orange hide' 
                   onClick={
                     () => {
                       this.getRaces();
@@ -410,20 +463,23 @@ class CreatePlayer extends React.Component {
                 </button>
               </div>
             </div>
-            <div id="step2" className="col s12">
+            <div id="step2">
+              <div className='row'>
+                <h5 className='header center'>
+                  Select your race.
+                </h5>
+              </div>
               <div className='row center'>
                 {this.displayRaces()}
               </div>
             </div>
-            <div id="step3" className="col s12">
+            <div id="step3">
               <div className='row center'>
                 {this.displayClasses()}
               </div>
             </div>
-            <div id="step4" className="col s12">
-              <div className='row center'>
-                <button onClick={() => this.displayPlayerData()}>Display</button>
-              </div>
+            <div id="step4">
+              {this.displayCharacter()}
             </div>
           </div>
         </div>
