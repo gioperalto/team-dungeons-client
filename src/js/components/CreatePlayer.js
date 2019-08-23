@@ -10,7 +10,6 @@ class CreatePlayer extends React.Component {
   constructor () { 
     super()
     this.state = {
-      // visibility: {},
       rolls: [],
       race: { id: 'elf' },
       class: { name: 'barbarian' },
@@ -235,46 +234,63 @@ class CreatePlayer extends React.Component {
     data.push(
       <div className='center'>
         <div className='row'>
-          <h2 className="header">{`${this.state.race.name} ${this.state.class.name}`}</h2>
-        </div>
-        <div className='row'>
-          <div class="col s12 m4">
-            <div class="card">
-              <div class="card-image">
+          <div className="col s12 m4">
+            <h2 className="header">Character</h2>
+            <div className="card">
+              <div className="card-image">
                 <img src={img_src} alt={`${this.state.race.id} ${this.state.class.name}`} />
-                <span class="card-title">Stats</span>
               </div>
               <div class="card-content">
-                <div>
-                  <span className="light">Race: </span>
-                  <span className="chip">{this.state.race.name}</span>
+                <div className="row">
+                  <div className="col s3">
+                    <h5 className="header">Stats</h5>
+                  </div>
+                  <div className="col s9">
+                    <div>
+                      <span className="chip orange white-text">{`${this.state.stats.str} STR`}</span>
+                      <span className="chip orange white-text">{`${this.state.stats.dex} DEX`}</span>
+                      <span className="chip orange white-text">{`${this.state.stats.con} CON`}</span>
+                    </div>
+                    <div>
+                      <span className="chip orange white-text">{`${this.state.stats.int} INT`}</span>
+                      <span className="chip orange white-text">{`${this.state.stats.wis} WIS`}</span>
+                      <span className="chip orange white-text">{`${this.state.stats.cha} CHA`}</span>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <span className="light">Class: </span>
-                  <span className="chip">{this.state.class.name}</span>
+                <div className="row">
+                  <div className="col s3">
+                    <h5 className="header">Info</h5>
+                  </div>
+                  <div className="col s9">
+                    <span className="light">Name:</span><span className="chip">Boo Koo</span>
+                    <span className="light">Age:</span><span className="chip">50 years</span>
+                    <span className="light">Height:</span><span className="chip">50 in.</span>
+                    <span className="light">Weight:</span><span className="chip">100 lbs</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div className='col s4'>
-            <div class="card">
-              <div class="card-image">
-                <span class="card-title">Race</span>
+            <h2 className="header">Race</h2>
+            <div className="card">
+              <div className="card-image">
               </div>
-              <div class="card-content">
+              <div className="card-content">
                 <p>I am a very simple card. I am good at containing small bits of information.
                 I am convenient because I require little markup to use effectively.</p>
               </div>
             </div>
           </div>
           <div className='col s4'>
-            <div class="card">
-              <div class="card-image">
-                <span class="card-title">Class</span>
-              </div>
-              <div class="card-content">
-                <p>I am a very simple card. I am good at containing small bits of information.
-                I am convenient because I require little markup to use effectively.</p>
+            <h2 className="header">Class</h2>
+            <div className="card">
+              <div className="card-stacked">
+                <div class="card-content">
+                  <p>I am a very simple card. I am good at containing small bits of information.
+                  I am convenient because I require little markup to use effectively.</p>
+                </div>
               </div>
             </div>
           </div>
