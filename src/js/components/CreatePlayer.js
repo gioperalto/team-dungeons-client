@@ -49,7 +49,7 @@ class CreatePlayer extends React.Component {
   }
 
   rollStats () {
-    axios.get('http://localhost:5001/api/v5/players/rollStats')
+    axios.get('http://localhost:8080/api/v5/players/rollStats')
       .then(response => this.setState({ rolls: response.data }));
     // this.hide();
   }
@@ -73,7 +73,7 @@ class CreatePlayer extends React.Component {
   }
 
   getRaces () {
-    axios.get('http://localhost:6001/api/v5/races')
+    axios.get('http://localhost:8080/api/v5/races')
       .then(response => this.setState({ races: response.data }));
   }
 
@@ -164,7 +164,7 @@ class CreatePlayer extends React.Component {
   }
 
   getClasses () {
-    axios.get('http://localhost:4001/api/v5/classes')
+    axios.get('http://localhost:8080/api/v5/classes')
       .then(response => this.setState({ classes: response.data }));
   }
 
